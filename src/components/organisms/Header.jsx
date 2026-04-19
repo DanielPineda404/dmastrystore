@@ -1,10 +1,12 @@
-import { useCartStore } from "../../store/cartStore";
-import { useProductStore } from "../../store/productStore";
-import { ShoppingCart, Search, User } from "lucide-react";
+import { useCartStore } from "../../store/cartStore.js";
+import { useProductStore } from "../../store/productStore.js";
+import { useUserStore } from "../../store/userStore.js";
+import { ShoppingCart, Search, UserCheck, User as UserIcon } from "lucide-react";
 
 export const Header = () => {
   const cart = useCartStore((state) => state.cart);
   const { searchTerm, setSearchTerm } = useProductStore();
+  const { user, isLoggedIn } = useUserStore();
   
   const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
 
@@ -15,27 +17,33 @@ export const Header = () => {
           STORE<span className="text-zinc-400">.</span>
         </div>
 
-        {/* Buscador Real */}
-        <div className="hidden md:flex items-center bg-zinc-100 px-3 py-1.5 rounded-full w-96 focus-within:ring-2 focus-within:ring-black/5 transition-all">
-          <Search size={18} className="text-zinc-400" />
+        <div className="hidden md:flex items-center bg-zinc-100 px-3 py-1.5 rounded-full w-80">
+          <Search size={16} className="text-zinc-400" />
           <input 
             type="text" 
             placeholder="Search products..." 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="bg-transparent border-none focus:ring-0 text-sm w-full ml-2"
+            className="bg-transparent border-none focus:ring-0 text-xs w-full ml-2"
           />
         </div>
 
-        <div className="flex items-center gap-5">
-          <button className="text-zinc-600 hover:text-black transition-colors">
-            <User size={22} />
-          </button>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            {isLoggedIn ? (
+              <>
+                <span className="text-xs font-medium text-zinc-600 hidden sm:block">Hi, {user.name}</span>
+                <UserCheck size={20} className="text-green-500" />
+              </>
+            ) : (
+              <UserIcon size={20} className="text-zinc-400" />
+            )}
+          </div>
           
-          <button className="relative text-zinc-600 hover:text-black transition-colors">
-            <ShoppingCart size={22} />
+          <button className="relative p-2">
+            <ShoppingCart size={20} />
             {cartCount > 0 && (
-              <span className="absolute -top-2 -right-2 bg-black text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full">
+              <span className="absolute top-0 right-0 bg-black text-white text-[9px] font-bold w-4 h-4 flex items-center justify-center rounded-full">
                 {cartCount}
               </span>
             )}
