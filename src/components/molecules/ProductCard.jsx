@@ -12,7 +12,7 @@ export const ProductCard = ({ product, onAdd }) => {
         />
       </div>
 
-      {/* Información */}
+      {/* Informacion */}
       <div className="flex flex-col flex-grow">
         <h3 className="font-semibold text-zinc-900 truncate">{product.title}</h3>
         <p className="text-sm text-zinc-500 mb-4 line-clamp-2 h-10">{product.description}</p>
