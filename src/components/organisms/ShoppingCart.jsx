@@ -1,14 +1,14 @@
-import { useCartStore } from "../../store/cartStore.js";
+import { useCartStore } from "../../store/cartStore.js"; // <--- ESTA ES LA LÍNEA QUE FALTABA
 import { Button } from "../atoms/Button.jsx";
 import { Trash2, Plus, Minus } from "lucide-react";
 
-export const ShoppingCart = () => {
+export const ShoppingCart = ({ onCheckout }) => {
   const { cart, addToCart, removeFromCart, clearCart, getTotal } = useCartStore();
 
   if (cart.length === 0) {
     return (
       <div className="text-center py-12 bg-zinc-50 rounded-2xl border-2 border-dashed border-zinc-200">
-        <p className="text-zinc-500 text-sm">Your cart is empty.</p>
+        <p className="text-zinc-500 text-sm font-medium">Your cart is empty.</p>
       </div>
     );
   }
@@ -16,34 +16,40 @@ export const ShoppingCart = () => {
   return (
     <div className="bg-white rounded-2xl border border-zinc-100 p-6 shadow-sm">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-lg font-bold">Your Cart</h2>
-        <button onClick={clearCart} className="text-xs text-red-500 hover:text-red-700 font-medium">
+        <h2 className="text-lg font-bold text-zinc-900">Your Cart</h2>
+        <button 
+          onClick={clearCart} 
+          className="text-xs text-red-500 hover:text-red-700 font-semibold transition-colors"
+        >
           Clear all
         </button>
       </div>
 
-      <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2">
+      <div className="space-y-4 max-h-[350px] overflow-y-auto pr-2 custom-scrollbar">
         {cart.map((item) => (
           <div key={item.id} className="flex items-center gap-3 py-3 border-b border-zinc-50 last:border-none">
-            <img src={item.image} alt={item.title} className="w-12 h-12 object-cover rounded-lg bg-zinc-50" />
-            <div className="flex-grow min-w-0">
-              <h4 className="text-sm font-semibold text-zinc-900 truncate">{item.title}</h4>
-              <p className="text-xs text-zinc-500">${item.price}</p>
+            <div className="w-12 h-12 bg-zinc-100 rounded-lg overflow-hidden flex-shrink-0">
+              <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
             </div>
             
-            <div className="flex items-center gap-2 bg-zinc-50 rounded-md p-1 border border-zinc-100">
+            <div className="flex-grow min-w-0">
+              <h4 className="text-sm font-bold text-zinc-900 truncate">{item.title}</h4>
+              <p className="text-xs text-zinc-500 font-medium">${item.price}</p>
+            </div>
+            
+            <div className="flex items-center gap-2 bg-zinc-50 rounded-lg p-1 border border-zinc-100">
               <button 
                 onClick={() => removeFromCart(item.id)} 
-                className="p-0.5 hover:bg-white rounded transition-colors"
+                className="p-1 hover:bg-white hover:shadow-sm rounded transition-all"
               >
-                <Minus size={12} />
+                <Minus size={12} className="text-zinc-600" />
               </button>
-              <span className="text-xs font-bold w-3 text-center">{item.quantity}</span>
+              <span className="text-xs font-bold w-4 text-center">{item.quantity}</span>
               <button 
                 onClick={() => addToCart(item)} 
-                className="p-0.5 hover:bg-white rounded transition-colors"
+                className="p-1 hover:bg-white hover:shadow-sm rounded transition-all"
               >
-                <Plus size={12} />
+                <Plus size={12} className="text-zinc-600" />
               </button>
             </div>
           </div>
@@ -51,12 +57,19 @@ export const ShoppingCart = () => {
       </div>
 
       <div className="mt-6 pt-6 border-t border-zinc-100">
-        <div className="flex justify-between items-center mb-4">
-          <span className="text-zinc-500 text-sm">Total</span>
-          <span className="text-xl font-bold text-black">${getTotal().toFixed(2)}</span>
+        <div className="flex justify-between items-center mb-6">
+          <span className="text-zinc-500 text-sm font-medium">Estimated Total</span>
+          <span className="text-2xl font-black text-black tracking-tight">
+            ${getTotal().toFixed(2)}
+          </span>
         </div>
-        <Button className="w-full py-3">
-          Checkout
+        
+        <Button 
+          className="w-full py-4 text-sm font-bold uppercase tracking-widest shadow-lg shadow-black/5" 
+          onClick={onCheckout}
+          disabled={cart.length === 0}
+        >
+          Go to Checkout
         </Button>
       </div>
     </div>
