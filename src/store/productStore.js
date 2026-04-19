@@ -6,7 +6,7 @@ export const useProductStore = create((set, get) => ({
   filteredProducts: mockProducts,
   searchTerm: '',
   currentPage: 1,
-  itemsPerPage: 4, // Puedes cambiarlo a 8 o 12 después
+  itemsPerPage: 4,
 
   setSearchTerm: (term) => {
     const { allProducts } = get();
@@ -19,7 +19,6 @@ export const useProductStore = create((set, get) => ({
 
   setCurrentPage: (page) => set({ currentPage: page }),
 
-  // Función para obtener solo los productos de la página actual
   getPaginatedProducts: () => {
     const { filteredProducts, currentPage, itemsPerPage } = get();
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -28,6 +27,6 @@ export const useProductStore = create((set, get) => ({
 
   getTotalPages: () => {
     const { filteredProducts, itemsPerPage } = get();
-    return Math.ceil(filteredProducts.length / itemsPerPage);
+    return Math.ceil(filteredProducts.length / itemsPerPage) || 1;
   }
 }));
