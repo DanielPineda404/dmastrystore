@@ -13,7 +13,6 @@ export const useProductStore = create((set, get) => ({
     const filtered = term.trim() === '' 
       ? allProducts 
       : allProducts.filter(p => p.title.toLowerCase().includes(term.toLowerCase()));
-    
     set({ searchTerm: term, filteredProducts: filtered, currentPage: 1 });
   },
 

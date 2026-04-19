@@ -8,20 +8,16 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         variant="outline" 
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="p-2 disabled:opacity-30"
+        className="p-2"
       >
         <ChevronLeft size={20} />
       </Button>
-      
-      <span className="text-sm font-medium text-zinc-600">
-        Page <span className="text-black">{currentPage}</span> of {totalPages}
-      </span>
-
+      <span className="text-sm font-medium">Page {currentPage} of {totalPages}</span>
       <Button 
         variant="outline" 
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="p-2 disabled:opacity-30"
+        className="p-2"
       >
         <ChevronRight size={20} />
       </Button>

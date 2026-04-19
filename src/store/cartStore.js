@@ -8,7 +8,6 @@ export const useCartStore = create(
       addToCart: (product) => {
         const currentCart = get().cart;
         const existingItem = currentCart.find(item => item.id === product.id);
-
         if (existingItem) {
           set({
             cart: currentCart.map(item =>
@@ -23,6 +22,6 @@ export const useCartStore = create(
       clearCart: () => set({ cart: [] }),
       getTotal: () => get().cart.reduce((acc, item) => acc + (item.price * item.quantity), 0),
     }),
-    { name: 'shopping-cart' } // Nombre para localStorage
+    { name: 'shopping-cart' }
   )
 );
