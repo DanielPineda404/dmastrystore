@@ -1,9 +1,22 @@
-import { useCartStore } from "../../store/cartStore.js"; // <--- ESTA ES LA LÍNEA QUE FALTABA
+import { useCartStore } from "../../store/cartStore.js";
+import { useUserStore } from "../../store/userStore.js"; // Importamos para la validación
 import { Button } from "../atoms/Button.jsx";
 import { Trash2, Plus, Minus } from "lucide-react";
+import { toast } from "sonner";
 
 export const ShoppingCart = ({ onCheckout }) => {
   const { cart, addToCart, removeFromCart, clearCart, getTotal } = useCartStore();
+  const { isLoggedIn } = useUserStore();
+
+  const handleCheckoutClick = () => {
+    if (!isLoggedIn) {
+      toast.error("Authentication required", {
+        description: "Please login or register to complete your purchase."
+      });
+      return;
+    }
+    onCheckout();
+  };
 
   if (cart.length === 0) {
     return (
@@ -40,16 +53,16 @@ export const ShoppingCart = ({ onCheckout }) => {
             <div className="flex items-center gap-2 bg-zinc-50 rounded-lg p-1 border border-zinc-100">
               <button 
                 onClick={() => removeFromCart(item.id)} 
-                className="p-1 hover:bg-white hover:shadow-sm rounded transition-all"
+                className="p-1 hover:bg-white rounded transition-all"
               >
-                <Minus size={12} className="text-zinc-600" />
+                <Minus size={12} />
               </button>
               <span className="text-xs font-bold w-4 text-center">{item.quantity}</span>
               <button 
                 onClick={() => addToCart(item)} 
-                className="p-1 hover:bg-white hover:shadow-sm rounded transition-all"
+                className="p-1 hover:bg-white rounded transition-all"
               >
-                <Plus size={12} className="text-zinc-600" />
+                <Plus size={12} />
               </button>
             </div>
           </div>
@@ -58,15 +71,15 @@ export const ShoppingCart = ({ onCheckout }) => {
 
       <div className="mt-6 pt-6 border-t border-zinc-100">
         <div className="flex justify-between items-center mb-6">
-          <span className="text-zinc-500 text-sm font-medium">Estimated Total</span>
-          <span className="text-2xl font-black text-black tracking-tight">
+          <span className="text-zinc-500 text-sm font-medium">Total</span>
+          <span className="text-2xl font-black text-black">
             ${getTotal().toFixed(2)}
           </span>
         </div>
         
         <Button 
           className="w-full py-4 text-sm font-bold uppercase tracking-widest shadow-lg shadow-black/5" 
-          onClick={onCheckout}
+          onClick={handleCheckoutClick}
           disabled={cart.length === 0}
         >
           Go to Checkout
