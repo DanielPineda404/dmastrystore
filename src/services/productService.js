@@ -1,48 +1,29 @@
-const normalizeProduct = (apiData, source) => {
-  const placeholder = "https://placehold.co/600x600/f4f4f5/a1a1aa?text=Sport+Item";
+/**
+ * Servicio unificado de productos.
+ * Aquí centralizamos las llamadas a APIs para que el Store no dependa de URLs externas.
+ */
 
-  if (source === 'fakestore') {
-    return {
-      id: `fs-${apiData.id}`,
-      title: apiData.title,
-      price: apiData.price,
-      description: apiData.description,
-      image: apiData.image || placeholder,
-      category: apiData.category,
-      rating: apiData.rating || { rate: 0, count: 0 }
-    };
-  }
+const FAKESTORE_URL = 'https://fakestoreapi.com/products';
 
-  if (source === 'sportsdb') {
-    return {
-      id: `sdb-${apiData.idTeam}`,
-      title: `${apiData.strTeam} Official Jersey`,
-      price: 79.99,
-      description: `Official gear for ${apiData.strTeam}. Professional quality technical fabric for high performance.`,
-      // Priorizamos el Badge, si no existe, el Jersey, si no, el placeholder
-      image: apiData.strTeamBadge || apiData.strTeamJersey || placeholder,
-      category: 'Football',
-      rating: { rate: 4.8, count: 120 }
-    };
-  }
-};
-
-export const fetchAllSources = async () => {
+export const fetchAllProducts = async () => {
   try {
-    const [fakeRes, sportsRes] = await Promise.all([
-      fetch('https://fakestoreapi.com/products'),
-      fetch('https://www.thesportsdb.com/api/v1/json/3/search_all_teams.php?s=Soccer&c=Spain')
-    ]);
+    const response = await fetch(FAKESTORE_URL);
+    if (!response.ok) throw new Error('Network response was not ok');
+    
+    const data = await response.json();
 
-    const fakeData = await fakeRes.json();
-    const sportsData = await sportsRes.json();
-
-    const normalizedFake = fakeData.map(p => normalizeProduct(p, 'fakestore'));
-    const normalizedSports = (sportsData.teams || []).map(p => normalizeProduct(p, 'sportsdb'));
-
-    return [...normalizedFake, ...normalizedSports];
+    // Normalizamos los datos para asegurar que siempre tengan la estructura que React espera
+    return data.map(product => ({
+      id: `fs-${product.id}`, // Prefijo para evitar conflictos de ID
+      title: product.title,
+      price: product.price,
+      description: product.description,
+      image: product.image,
+      category: product.category,
+      rating: product.rating || { rate: 0, count: 0 }
+    }));
   } catch (error) {
-    console.error("Error unificando APIs:", error);
+    console.error("Error fetching products:", error);
     return [];
   }
 };

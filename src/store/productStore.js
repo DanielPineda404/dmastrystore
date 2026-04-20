@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { fetchAllSources } from '../services/productService';
+import { fetchAllProducts } from '../services/productService';
 
 export const useProductStore = create((set, get) => ({
   allProducts: [],
@@ -12,10 +12,12 @@ export const useProductStore = create((set, get) => ({
   isLoading: false,
   selectedProduct: null,
 
+  // Carga inicial de productos
   fetchProducts: async () => {
     set({ isLoading: true });
-    const data = await fetchAllSources();
+    const data = await fetchAllProducts();
     
+    // Extraer categorías únicas directamente de los datos reales
     const uniqueCategories = ['all', ...new Set(data.map(p => p.category))];
     
     set({ 
@@ -27,7 +29,7 @@ export const useProductStore = create((set, get) => ({
     });
   },
 
-  // Centraliza el filtrado para que siempre resetee la página a 1
+  // Sistema de filtrado robusto
   applyFilters: () => {
     const { allProducts, selectedCategory, searchTerm } = get();
     let filtered = [...allProducts];
@@ -42,6 +44,7 @@ export const useProductStore = create((set, get) => ({
       );
     }
 
+    // Crucial: Resetear a página 1 al filtrar para evitar pantallas vacías
     set({ filteredProducts: filtered, currentPage: 1 });
   },
 
@@ -55,17 +58,15 @@ export const useProductStore = create((set, get) => ({
     get().applyFilters();
   },
 
+  // Control de paginación con candados
   setCurrentPage: (page) => {
-    const { getTotalPages } = get();
-    const total = getTotalPages();
-    
-    // Candado de seguridad: No bajar de 1 ni superar el total
+    const total = get().getTotalPages();
     if (page < 1) return set({ currentPage: 1 });
     if (page > total) return set({ currentPage: total });
-
     set({ currentPage: page });
   },
 
+  // Navegación del Modal (Detalle de Producto)
   setSelectedProduct: (product) => set({ selectedProduct: product }),
   clearSelectedProduct: () => set({ selectedProduct: null }),
 
@@ -85,6 +86,7 @@ export const useProductStore = create((set, get) => ({
     set({ selectedProduct: filteredProducts[prevIdx] });
   },
 
+  // Helpers para la UI
   getPaginatedProducts: () => {
     const { filteredProducts, currentPage, itemsPerPage } = get();
     const startIndex = (currentPage - 1) * itemsPerPage;
