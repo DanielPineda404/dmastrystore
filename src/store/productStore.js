@@ -1,18 +1,32 @@
 import { create } from 'zustand';
-import { mockProducts } from '../mockdata/products';
 
 export const useProductStore = create((set, get) => ({
-  allProducts: mockProducts,
-  filteredProducts: mockProducts,
+  allProducts: [],
+  filteredProducts: [],
   searchTerm: '',
   currentPage: 1,
-  itemsPerPage: 4,
+  itemsPerPage: 6,
+  isLoading: false,
+
+  // Función para traer datos de la API
+  fetchProducts: async () => {
+    set({ isLoading: true });
+    try {
+      const response = await fetch('https://fakestoreapi.com/products');
+      const data = await response.json();
+      set({ allProducts: data, filteredProducts: data, isLoading: false });
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      set({ isLoading: false });
+    }
+  },
 
   setSearchTerm: (term) => {
     const { allProducts } = get();
     const filtered = term.trim() === '' 
       ? allProducts 
       : allProducts.filter(p => p.title.toLowerCase().includes(term.toLowerCase()));
+    
     set({ searchTerm: term, filteredProducts: filtered, currentPage: 1 });
   },
 
