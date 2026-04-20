@@ -1,88 +1,83 @@
 import { useCartStore } from "../../store/cartStore.js";
-import { useUserStore } from "../../store/userStore.js"; // Importamos para la validación
 import { Button } from "../atoms/Button.jsx";
-import { Trash2, Plus, Minus } from "lucide-react";
-import { toast } from "sonner";
+import { Trash2, Plus, Minus, ShoppingBag } from "lucide-react";
 
 export const ShoppingCart = ({ onCheckout }) => {
-  const { cart, addToCart, removeFromCart, clearCart, getTotal } = useCartStore();
-  const { isLoggedIn } = useUserStore();
-
-  const handleCheckoutClick = () => {
-    if (!isLoggedIn) {
-      toast.error("Authentication required", {
-        description: "Please login or register to complete your purchase."
-      });
-      return;
-    }
-    onCheckout();
-  };
+  const { cart, removeFromCart, updateQuantity, clearCart, getTotal } = useCartStore();
 
   if (cart.length === 0) {
     return (
-      <div className="text-center py-12 bg-zinc-50 rounded-2xl border-2 border-dashed border-zinc-200">
-        <p className="text-zinc-500 text-sm font-medium">Your cart is empty.</p>
+      <div className="bg-white p-8 rounded-[2rem] border border-zinc-100 shadow-sm text-center">
+        <div className="bg-zinc-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+          <ShoppingBag className="text-zinc-300" size={24} />
+        </div>
+        <h3 className="font-bold text-zinc-900">Your cart is empty</h3>
+        <p className="text-zinc-400 text-xs mt-1">Add some products to get started.</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-white rounded-2xl border border-zinc-100 p-6 shadow-sm">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-lg font-bold text-zinc-900">Your Cart</h2>
+    <div className="bg-white p-8 rounded-[2rem] border border-zinc-100 shadow-sm animate-in fade-in duration-500">
+      <div className="flex items-center justify-between mb-8">
+        <h3 className="font-black text-xl tracking-tighter">Your Cart</h3>
         <button 
-          onClick={clearCart} 
-          className="text-xs text-red-500 hover:text-red-700 font-semibold transition-colors"
+          onClick={clearCart}
+          className="text-[10px] font-bold uppercase tracking-widest text-red-400 hover:text-red-600 transition-colors"
         >
           Clear all
         </button>
       </div>
 
-      <div className="space-y-4 max-h-[350px] overflow-y-auto pr-2 custom-scrollbar">
+      <div className="space-y-6 mb-8 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
         {cart.map((item) => (
-          <div key={item.id} className="flex items-center gap-3 py-3 border-b border-zinc-50 last:border-none">
-            <div className="w-12 h-12 bg-zinc-100 rounded-lg overflow-hidden flex-shrink-0">
-              <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+          <div key={item.id} className="flex gap-4 group">
+            <div className="w-16 h-16 bg-zinc-50 rounded-xl p-2 flex-shrink-0">
+              <img src={item.image} alt={item.title} className="w-full h-full object-contain" />
             </div>
-            
             <div className="flex-grow min-w-0">
-              <h4 className="text-sm font-bold text-zinc-900 truncate">{item.title}</h4>
-              <p className="text-xs text-zinc-500 font-medium">${item.price}</p>
-            </div>
-            
-            <div className="flex items-center gap-2 bg-zinc-50 rounded-lg p-1 border border-zinc-100">
-              <button 
-                onClick={() => removeFromCart(item.id)} 
-                className="p-1 hover:bg-white rounded transition-all"
-              >
-                <Minus size={12} />
-              </button>
-              <span className="text-xs font-bold w-4 text-center">{item.quantity}</span>
-              <button 
-                onClick={() => addToCart(item)} 
-                className="p-1 hover:bg-white rounded transition-all"
-              >
-                <Plus size={12} />
-              </button>
+              <h4 className="text-xs font-bold text-zinc-900 truncate uppercase tracking-tight">
+                {item.title}
+              </h4>
+              <p className="text-sm font-black text-zinc-400 mt-0.5">${item.price}</p>
+              
+              <div className="flex items-center justify-between mt-2">
+                <div className="flex items-center border border-zinc-100 rounded-lg overflow-hidden bg-zinc-50">
+                  <button 
+                    onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                    className="p-1 hover:bg-zinc-200 transition-colors"
+                  >
+                    <Minus size={12} />
+                  </button>
+                  <span className="px-2 text-[10px] font-bold w-6 text-center">{item.quantity}</span>
+                  <button 
+                    onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                    className="p-1 hover:bg-zinc-200 transition-colors"
+                  >
+                    <Plus size={12} />
+                  </button>
+                </div>
+                <button 
+                  onClick={() => removeFromCart(item.id)}
+                  className="text-zinc-300 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"
+                >
+                  <Trash2 size={14} />
+                </button>
+              </div>
             </div>
           </div>
         ))}
       </div>
 
-      <div className="mt-6 pt-6 border-t border-zinc-100">
-        <div className="flex justify-between items-center mb-6">
-          <span className="text-zinc-500 text-sm font-medium">Total</span>
-          <span className="text-2xl font-black text-black">
+      <div className="pt-6 border-t border-zinc-100">
+        <div className="flex justify-between items-end mb-6">
+          <span className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.2em]">Total</span>
+          <span className="text-3xl font-black text-zinc-900 tracking-tighter">
             ${getTotal().toFixed(2)}
           </span>
         </div>
-        
-        <Button 
-          className="w-full py-4 text-sm font-bold uppercase tracking-widest shadow-lg shadow-black/5" 
-          onClick={handleCheckoutClick}
-          disabled={cart.length === 0}
-        >
-          Go to Checkout
+        <Button onClick={onCheckout} className="w-full py-4 text-xs font-bold uppercase tracking-[0.15em] shadow-lg shadow-black/5">
+          Checkout Now
         </Button>
       </div>
     </div>

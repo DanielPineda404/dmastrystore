@@ -7,6 +7,7 @@ import { AuthSection } from "./components/organisms/AuthSection.jsx";
 import { CheckoutPreview } from "./components/organisms/CheckoutPreview.jsx";
 import { SuccessScreen } from "./components/organisms/SuccessScreen.jsx";
 import { ProductDetailModal } from "./components/organisms/ProductDetailModal.jsx";
+import { CartDrawer } from "./components/organisms/CartDrawer.jsx"; // Nuevo import
 import { useProductStore } from "./store/productStore.js";
 
 function App() {
@@ -23,8 +24,9 @@ function App() {
     <MainLayout onNavigate={navigateTo}>
       <Toaster position="bottom-right" richColors /> 
       
-      {/* Modal Global de Detalles */}
+      {/* Componentes Globales */}
       <ProductDetailModal />
+      <CartDrawer onCheckout={() => navigateTo("checkout")} />
 
       {view === "shop" && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">

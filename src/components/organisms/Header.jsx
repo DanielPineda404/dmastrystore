@@ -3,8 +3,9 @@ import { useProductStore } from "../../store/productStore.js";
 import { useUserStore } from "../../store/userStore.js";
 import { ShoppingCart, Search, UserCheck, User as UserIcon } from "lucide-react";
 
-export const Header = ({ onNavigate }) => { // <--- Debe estar aquí
+export const Header = ({ onNavigate }) => {
   const cart = useCartStore((state) => state.cart);
+  const toggleCart = useCartStore((state) => state.toggleCart); // Función para abrir/cerrar
   const { searchTerm, setSearchTerm } = useProductStore();
   const { user, isLoggedIn } = useUserStore();
   
@@ -34,7 +35,7 @@ export const Header = ({ onNavigate }) => { // <--- Debe estar aquí
         <div className="flex items-center gap-4">
           <button 
             className="flex items-center gap-2 hover:bg-zinc-50 p-2 rounded-lg transition-colors"
-            onClick={() => onNavigate("login")} // <--- Aquí es donde daba el error
+            onClick={() => onNavigate("login")}
           >
             {isLoggedIn ? (
               <>
@@ -46,10 +47,13 @@ export const Header = ({ onNavigate }) => { // <--- Debe estar aquí
             )}
           </button>
           
-          <button className="relative p-2" onClick={() => onNavigate("shop")}>
+          <button 
+            className="relative p-2 hover:bg-zinc-50 rounded-lg transition-colors" 
+            onClick={toggleCart} // <--- Ahora es funcional
+          >
             <ShoppingCart size={20} />
             {cartCount > 0 && (
-              <span className="absolute top-0 right-0 bg-black text-white text-[9px] font-bold w-4 h-4 flex items-center justify-center rounded-full">
+              <span className="absolute top-0 right-0 bg-black text-white text-[9px] font-bold w-4 h-4 flex items-center justify-center rounded-full border-2 border-white">
                 {cartCount}
               </span>
             )}
