@@ -3,7 +3,7 @@ import { useProductStore } from "../../store/productStore.js";
 import { useUserStore } from "../../store/userStore.js";
 import { ShoppingCart, Search, UserCheck, User as UserIcon } from "lucide-react";
 
-export const Header = ({ onNavigate }) => { // Recibimos la prop de navegación
+export const Header = ({ onNavigate }) => { // <--- Debe estar aquí
   const cart = useCartStore((state) => state.cart);
   const { searchTerm, setSearchTerm } = useProductStore();
   const { user, isLoggedIn } = useUserStore();
@@ -13,7 +13,6 @@ export const Header = ({ onNavigate }) => { // Recibimos la prop de navegación
   return (
     <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-zinc-100">
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-        {/* Logo clickeable para volver al inicio */}
         <div 
           className="text-xl font-bold tracking-tighter text-black cursor-pointer"
           onClick={() => onNavigate("shop")}
@@ -21,7 +20,6 @@ export const Header = ({ onNavigate }) => { // Recibimos la prop de navegación
           STORE<span className="text-zinc-400">.</span>
         </div>
 
-        {/* Buscador central */}
         <div className="hidden md:flex items-center bg-zinc-100 px-3 py-1.5 rounded-full w-80">
           <Search size={16} className="text-zinc-400" />
           <input 
@@ -34,10 +32,9 @@ export const Header = ({ onNavigate }) => { // Recibimos la prop de navegación
         </div>
 
         <div className="flex items-center gap-4">
-          {/* Botón de Perfil / Login */}
           <button 
             className="flex items-center gap-2 hover:bg-zinc-50 p-2 rounded-lg transition-colors"
-            onClick={() => onNavigate(isLoggedIn ? "login" : "login")} // Navega a la pantalla de Auth
+            onClick={() => onNavigate("login")} // <--- Aquí es donde daba el error
           >
             {isLoggedIn ? (
               <>
