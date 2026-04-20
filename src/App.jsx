@@ -1,14 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react"; // <--- Agregamos useEffect
 import { MainLayout } from "./components/templates/MainLayout.jsx";
 import { ProductGallery } from "./components/organisms/ProductGallery.jsx";
 import { ShoppingCart } from "./components/organisms/ShoppingCart.jsx";
 import { AuthSection } from "./components/organisms/AuthSection.jsx";
 import { CheckoutPreview } from "./components/organisms/CheckoutPreview.jsx";
 import { useCartStore } from "./store/cartStore.js";
+import { useProductStore } from "./store/productStore.js"; // <--- Importamos productStore
 
 function App() {
-  const [view, setView] = useState("shop"); // 'shop' o 'checkout'
-  const cart = useCartStore((state) => state.cart);
+  const [view, setView] = useState("shop");
+  const fetchProducts = useProductStore((state) => state.fetchProducts);
+
+  // Llamada a la API al montar el componente
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
 
   return (
     <MainLayout>
@@ -17,7 +23,7 @@ function App() {
           <div className="lg:col-span-2">
             <div className="mb-8">
               <h1 className="text-3xl font-bold tracking-tight text-zinc-900">Collections</h1>
-              <p className="text-zinc-500 text-sm mt-1">Carefully curated minimalist essentials.</p>
+              <p className="text-zinc-500 text-sm mt-1">Real-time data from FakeStore API.</p>
             </div>
             <ProductGallery />
           </div>
@@ -25,7 +31,6 @@ function App() {
           <div className="lg:col-span-1 space-y-6">
             <AuthSection />
             <div className="sticky top-24">
-              {/* Le pasamos una función al carrito para cambiar la vista */}
               <ShoppingCart onCheckout={() => setView("checkout")} />
             </div>
           </div>
