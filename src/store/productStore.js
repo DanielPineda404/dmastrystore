@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { fetchAllSources } from '../services/productService'; // Importamos el servicio
 
 export const useProductStore = create((set, get) => ({
   allProducts: [],
@@ -9,58 +10,38 @@ export const useProductStore = create((set, get) => ({
   currentPage: 1,
   itemsPerPage: 6,
   isLoading: false,
-  
-  // Estado para el Modal de Detalle
   selectedProduct: null,
 
   fetchProducts: async () => {
     set({ isLoading: true });
-    try {
-      const response = await fetch('https://fakestoreapi.com/products');
-      const data = await response.json();
-      const uniqueCategories = ['all', ...new Set(data.map(p => p.category))];
-      set({ 
-        allProducts: data, 
-        filteredProducts: data, 
-        categories: uniqueCategories, 
-        isLoading: false 
-      });
-    } catch (error) {
-      console.error("Error fetching products:", error);
-      set({ isLoading: false });
-    }
+    // Llamamos a nuestro servicio unificado
+    const data = await fetchAllSources(); 
+    
+    const uniqueCategories = ['all', ...new Set(data.map(p => p.category))];
+    
+    set({ 
+      allProducts: data, 
+      filteredProducts: data, 
+      categories: uniqueCategories, 
+      isLoading: false 
+    });
   },
 
   setSelectedProduct: (product) => set({ selectedProduct: product }),
-  
   clearSelectedProduct: () => set({ selectedProduct: null }),
 
-  // LÓGICA DE NAVEGACIÓN DEL CARRUSEL
-  // Obtiene el índice del producto actual en la lista filtrada
-  getCurrentProductIndex: () => {
-    const { filteredProducts, selectedProduct } = get();
-    if (!selectedProduct) return -1;
-    return filteredProducts.findIndex(p => p.id === selectedProduct.id);
-  },
-
-  // Moverse al siguiente producto (hace loop al principio si llega al final)
   showNextProduct: () => {
-    const { filteredProducts, getCurrentProductIndex } = get();
-    const currentIndex = getCurrentProductIndex();
-    if (currentIndex === -1) return;
-
-    const nextIndex = (currentIndex + 1) % filteredProducts.length;
-    set({ selectedProduct: filteredProducts[nextIndex] });
+    const { filteredProducts, selectedProduct } = get();
+    const idx = filteredProducts.findIndex(p => p.id === selectedProduct.id);
+    const nextIdx = (idx + 1) % filteredProducts.length;
+    set({ selectedProduct: filteredProducts[nextIdx] });
   },
 
-  // Moverse al producto anterior (hace loop al final si llega al principio)
   showPrevProduct: () => {
-    const { filteredProducts, getCurrentProductIndex } = get();
-    const currentIndex = getCurrentProductIndex();
-    if (currentIndex === -1) return;
-
-    const prevIndex = (currentIndex - 1 + filteredProducts.length) % filteredProducts.length;
-    set({ selectedProduct: filteredProducts[prevIndex] });
+    const { filteredProducts, selectedProduct } = get();
+    const idx = filteredProducts.findIndex(p => p.id === selectedProduct.id);
+    const prevIdx = (idx - 1 + filteredProducts.length) % filteredProducts.length;
+    set({ selectedProduct: filteredProducts[prevIdx] });
   },
 
   setCategory: (category) => {
