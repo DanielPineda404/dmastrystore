@@ -35,6 +35,34 @@ export const useProductStore = create((set, get) => ({
   
   clearSelectedProduct: () => set({ selectedProduct: null }),
 
+  // LÓGICA DE NAVEGACIÓN DEL CARRUSEL
+  // Obtiene el índice del producto actual en la lista filtrada
+  getCurrentProductIndex: () => {
+    const { filteredProducts, selectedProduct } = get();
+    if (!selectedProduct) return -1;
+    return filteredProducts.findIndex(p => p.id === selectedProduct.id);
+  },
+
+  // Moverse al siguiente producto (hace loop al principio si llega al final)
+  showNextProduct: () => {
+    const { filteredProducts, getCurrentProductIndex } = get();
+    const currentIndex = getCurrentProductIndex();
+    if (currentIndex === -1) return;
+
+    const nextIndex = (currentIndex + 1) % filteredProducts.length;
+    set({ selectedProduct: filteredProducts[nextIndex] });
+  },
+
+  // Moverse al producto anterior (hace loop al final si llega al principio)
+  showPrevProduct: () => {
+    const { filteredProducts, getCurrentProductIndex } = get();
+    const currentIndex = getCurrentProductIndex();
+    if (currentIndex === -1) return;
+
+    const prevIndex = (currentIndex - 1 + filteredProducts.length) % filteredProducts.length;
+    set({ selectedProduct: filteredProducts[prevIndex] });
+  },
+
   setCategory: (category) => {
     const { allProducts, searchTerm } = get();
     let filtered = allProducts;
