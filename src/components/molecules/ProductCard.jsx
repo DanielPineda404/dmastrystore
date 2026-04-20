@@ -1,22 +1,37 @@
 import { Button } from "../atoms/Button.jsx";
 import { toast } from "sonner";
 import { useProductStore } from "../../store/productStore.js";
+import { ImageOff } from "lucide-react"; // Icono para cuando no hay imagen
 
 export const ProductCard = ({ product, onAdd }) => {
   const setSelectedProduct = useProductStore((state) => state.setSelectedProduct);
 
+  // Función para manejar el error de imagen
+  const handleImageError = (e) => {
+    e.target.onerror = null; 
+    // Puedes poner una URL de una imagen de "No disponible" o un color sólido
+    e.target.src = "https://placehold.co/400x400/f4f4f5/a1a1aa?text=No+Image";
+  };
+
   return (
     <div className="group bg-white p-4 rounded-2xl border border-zinc-100 hover:shadow-xl hover:shadow-zinc-200/50 transition-all duration-300 flex flex-col h-full">
-      {/* Imagen Clickeable */}
       <div 
         onClick={() => setSelectedProduct(product)}
-        className="aspect-square overflow-hidden rounded-xl bg-zinc-50 mb-4 flex items-center justify-center p-6 cursor-pointer"
+        className="aspect-square overflow-hidden rounded-xl bg-zinc-50 mb-4 flex items-center justify-center p-6 cursor-pointer relative"
       >
-        <img 
-          src={product.image} 
-          alt={product.title} 
-          className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-500"
-        />
+        {product.image ? (
+          <img 
+            src={product.image} 
+            alt={product.title} 
+            onError={handleImageError}
+            className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-500"
+          />
+        ) : (
+          <div className="flex flex-col items-center gap-2 text-zinc-300">
+            <ImageOff size={32} />
+            <span className="text-[10px] font-bold uppercase">No Preview</span>
+          </div>
+        )}
       </div>
 
       <div className="flex flex-col flex-grow">
@@ -33,14 +48,15 @@ export const ProductCard = ({ product, onAdd }) => {
           {product.description}
         </p>
         
-        <div className="flex items-center justify-between mt-auto pt-4">
+        <div className="flex items-center justify-between mt-auto pt-4 border-t border-zinc-50">
           <span className="text-lg font-black text-zinc-900">${product.price}</span>
           <Button 
             variant="primary" 
             className="text-[10px] py-2 px-3 h-8 uppercase font-bold tracking-wider"
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation(); // Evita abrir el modal al añadir al carrito
               onAdd(product);
-              toast.success(`${product.title.substring(0, 15)}... added to cart`);
+              toast.success("Added to cart");
             }}
           >
             Add
