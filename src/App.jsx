@@ -1,15 +1,16 @@
 import { useState, useEffect } from "react";
-import { Toaster } from "sonner"; // <--- Importar Toaster
+import { Toaster } from "sonner";
 import { MainLayout } from "./components/templates/MainLayout.jsx";
 import { ProductGallery } from "./components/organisms/ProductGallery.jsx";
 import { ShoppingCart } from "./components/organisms/ShoppingCart.jsx";
 import { AuthSection } from "./components/organisms/AuthSection.jsx";
 import { CheckoutPreview } from "./components/organisms/CheckoutPreview.jsx";
+import { SuccessScreen } from "./components/organisms/SuccessScreen.jsx"; // <--- Importar
 import { useCartStore } from "./store/cartStore.js";
 import { useProductStore } from "./store/productStore.js";
 
 function App() {
-  const [view, setView] = useState("shop");
+  const [view, setView] = useState("shop"); // 'shop', 'checkout', o 'success'
   const fetchProducts = useProductStore((state) => state.fetchProducts);
 
   useEffect(() => {
@@ -18,10 +19,9 @@ function App() {
 
   return (
     <MainLayout>
-      {/* Añadimos el Toaster aquí. El 'richColors' es para que se vean verdes/rojos según el éxito */}
       <Toaster position="bottom-right" richColors /> 
       
-      {view === "shop" ? (
+      {view === "shop" && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           <div className="lg:col-span-2">
             <div className="mb-8">
@@ -30,7 +30,6 @@ function App() {
             </div>
             <ProductGallery />
           </div>
-
           <div className="lg:col-span-1 space-y-6">
             <AuthSection />
             <div className="sticky top-24">
@@ -38,8 +37,17 @@ function App() {
             </div>
           </div>
         </div>
-      ) : (
-        <CheckoutPreview onBack={() => setView("shop")} />
+      )}
+
+      {view === "checkout" && (
+        <CheckoutPreview 
+          onBack={() => setView("shop")} 
+          onSuccess={() => setView("success")} // <--- Pasamos la función de éxito
+        />
+      )}
+
+      {view === "success" && (
+        <SuccessScreen onReturn={() => setView("shop")} />
       )}
     </MainLayout>
   );
