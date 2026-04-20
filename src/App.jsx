@@ -6,6 +6,7 @@ import { ShoppingCart } from "./components/organisms/ShoppingCart.jsx";
 import { AuthSection } from "./components/organisms/AuthSection.jsx";
 import { CheckoutPreview } from "./components/organisms/CheckoutPreview.jsx";
 import { SuccessScreen } from "./components/organisms/SuccessScreen.jsx";
+import { ProductDetailModal } from "./components/organisms/ProductDetailModal.jsx";
 import { useProductStore } from "./store/productStore.js";
 
 function App() {
@@ -16,14 +17,15 @@ function App() {
     fetchProducts();
   }, [fetchProducts]);
 
-  // Función para cambiar de vista desde cualquier lugar
   const navigateTo = (newView) => setView(newView);
 
   return (
     <MainLayout onNavigate={navigateTo}>
       <Toaster position="bottom-right" richColors /> 
       
-      {/* VISTA: TIENDA PRINCIPAL */}
+      {/* Modal Global de Detalles */}
+      <ProductDetailModal />
+
       {view === "shop" && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           <div className="lg:col-span-2">
@@ -41,7 +43,6 @@ function App() {
         </div>
       )}
 
-      {/* VISTA: LOGIN / REGISTRO (Desacoplado) */}
       {(view === "login" || view === "register") && (
         <div className="max-w-md mx-auto py-20">
           <AuthSection 
@@ -52,7 +53,6 @@ function App() {
         </div>
       )}
 
-      {/* VISTA: CHECKOUT */}
       {view === "checkout" && (
         <CheckoutPreview 
           onBack={() => navigateTo("shop")} 
@@ -60,7 +60,6 @@ function App() {
         />
       )}
 
-      {/* VISTA: ÉXITO */}
       {view === "success" && (
         <SuccessScreen onReturn={() => navigateTo("shop")} />
       )}
