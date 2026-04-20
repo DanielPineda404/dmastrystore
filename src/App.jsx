@@ -5,22 +5,25 @@ import { ProductGallery } from "./components/organisms/ProductGallery.jsx";
 import { ShoppingCart } from "./components/organisms/ShoppingCart.jsx";
 import { AuthSection } from "./components/organisms/AuthSection.jsx";
 import { CheckoutPreview } from "./components/organisms/CheckoutPreview.jsx";
-import { SuccessScreen } from "./components/organisms/SuccessScreen.jsx"; // <--- Importar
-import { useCartStore } from "./store/cartStore.js";
+import { SuccessScreen } from "./components/organisms/SuccessScreen.jsx";
 import { useProductStore } from "./store/productStore.js";
 
 function App() {
-  const [view, setView] = useState("shop"); // 'shop', 'checkout', o 'success'
+  const [view, setView] = useState("shop"); 
   const fetchProducts = useProductStore((state) => state.fetchProducts);
 
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
 
+  // Función para cambiar de vista desde cualquier lugar
+  const navigateTo = (newView) => setView(newView);
+
   return (
-    <MainLayout>
+    <MainLayout onNavigate={navigateTo}>
       <Toaster position="bottom-right" richColors /> 
       
+      {/* VISTA: TIENDA PRINCIPAL */}
       {view === "shop" && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           <div className="lg:col-span-2">
@@ -30,24 +33,36 @@ function App() {
             </div>
             <ProductGallery />
           </div>
-          <div className="lg:col-span-1 space-y-6">
-            <AuthSection />
+          <div className="lg:col-span-1">
             <div className="sticky top-24">
-              <ShoppingCart onCheckout={() => setView("checkout")} />
+              <ShoppingCart onCheckout={() => navigateTo("checkout")} />
             </div>
           </div>
         </div>
       )}
 
+      {/* VISTA: LOGIN / REGISTRO (Desacoplado) */}
+      {(view === "login" || view === "register") && (
+        <div className="max-w-md mx-auto py-20">
+          <AuthSection 
+            initialMode={view} 
+            onSuccess={() => navigateTo("shop")}
+            onSwitchMode={(mode) => navigateTo(mode)} 
+          />
+        </div>
+      )}
+
+      {/* VISTA: CHECKOUT */}
       {view === "checkout" && (
         <CheckoutPreview 
-          onBack={() => setView("shop")} 
-          onSuccess={() => setView("success")} // <--- Pasamos la función de éxito
+          onBack={() => navigateTo("shop")} 
+          onSuccess={() => navigateTo("success")} 
         />
       )}
 
+      {/* VISTA: ÉXITO */}
       {view === "success" && (
-        <SuccessScreen onReturn={() => setView("shop")} />
+        <SuccessScreen onReturn={() => navigateTo("shop")} />
       )}
     </MainLayout>
   );
