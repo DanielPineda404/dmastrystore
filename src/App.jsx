@@ -1,23 +1,26 @@
-import { useState, useEffect } from "react"; // <--- Agregamos useEffect
+import { useState, useEffect } from "react";
+import { Toaster } from "sonner"; // <--- Importar Toaster
 import { MainLayout } from "./components/templates/MainLayout.jsx";
 import { ProductGallery } from "./components/organisms/ProductGallery.jsx";
 import { ShoppingCart } from "./components/organisms/ShoppingCart.jsx";
 import { AuthSection } from "./components/organisms/AuthSection.jsx";
 import { CheckoutPreview } from "./components/organisms/CheckoutPreview.jsx";
 import { useCartStore } from "./store/cartStore.js";
-import { useProductStore } from "./store/productStore.js"; // <--- Importamos productStore
+import { useProductStore } from "./store/productStore.js";
 
 function App() {
   const [view, setView] = useState("shop");
   const fetchProducts = useProductStore((state) => state.fetchProducts);
 
-  // Llamada a la API al montar el componente
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
 
   return (
     <MainLayout>
+      {/* Añadimos el Toaster aquí. El 'richColors' es para que se vean verdes/rojos según el éxito */}
+      <Toaster position="bottom-right" richColors /> 
+      
       {view === "shop" ? (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           <div className="lg:col-span-2">
