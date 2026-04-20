@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { fetchAllSources } from '../services/productService'; // Importamos el servicio
+import { fetchAllSources } from '../services/productService';
 
 export const useProductStore = create((set, get) => ({
   allProducts: [],
@@ -14,8 +14,7 @@ export const useProductStore = create((set, get) => ({
 
   fetchProducts: async () => {
     set({ isLoading: true });
-    // Llamamos a nuestro servicio unificado
-    const data = await fetchAllSources(); 
+    const data = await fetchAllSources();
     
     const uniqueCategories = ['all', ...new Set(data.map(p => p.category))];
     
@@ -23,8 +22,48 @@ export const useProductStore = create((set, get) => ({
       allProducts: data, 
       filteredProducts: data, 
       categories: uniqueCategories, 
-      isLoading: false 
+      isLoading: false,
+      currentPage: 1 
     });
+  },
+
+  // Centraliza el filtrado para que siempre resetee la página a 1
+  applyFilters: () => {
+    const { allProducts, selectedCategory, searchTerm } = get();
+    let filtered = [...allProducts];
+
+    if (selectedCategory !== 'all') {
+      filtered = filtered.filter(p => p.category === selectedCategory);
+    }
+
+    if (searchTerm.trim() !== '') {
+      filtered = filtered.filter(p => 
+        p.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    set({ filteredProducts: filtered, currentPage: 1 });
+  },
+
+  setCategory: (category) => {
+    set({ selectedCategory: category });
+    get().applyFilters();
+  },
+
+  setSearchTerm: (term) => {
+    set({ searchTerm: term });
+    get().applyFilters();
+  },
+
+  setCurrentPage: (page) => {
+    const { getTotalPages } = get();
+    const total = getTotalPages();
+    
+    // Candado de seguridad: No bajar de 1 ni superar el total
+    if (page < 1) return set({ currentPage: 1 });
+    if (page > total) return set({ currentPage: total });
+
+    set({ currentPage: page });
   },
 
   setSelectedProduct: (product) => set({ selectedProduct: product }),
@@ -33,6 +72,7 @@ export const useProductStore = create((set, get) => ({
   showNextProduct: () => {
     const { filteredProducts, selectedProduct } = get();
     const idx = filteredProducts.findIndex(p => p.id === selectedProduct.id);
+    if (idx === -1) return;
     const nextIdx = (idx + 1) % filteredProducts.length;
     set({ selectedProduct: filteredProducts[nextIdx] });
   },
@@ -40,27 +80,10 @@ export const useProductStore = create((set, get) => ({
   showPrevProduct: () => {
     const { filteredProducts, selectedProduct } = get();
     const idx = filteredProducts.findIndex(p => p.id === selectedProduct.id);
+    if (idx === -1) return;
     const prevIdx = (idx - 1 + filteredProducts.length) % filteredProducts.length;
     set({ selectedProduct: filteredProducts[prevIdx] });
   },
-
-  setCategory: (category) => {
-    const { allProducts, searchTerm } = get();
-    let filtered = allProducts;
-    if (category !== 'all') filtered = filtered.filter(p => p.category === category);
-    if (searchTerm) filtered = filtered.filter(p => p.title.toLowerCase().includes(searchTerm.toLowerCase()));
-    set({ selectedCategory: category, filteredProducts: filtered, currentPage: 1 });
-  },
-
-  setSearchTerm: (term) => {
-    const { allProducts, selectedCategory } = get();
-    let filtered = allProducts;
-    if (selectedCategory !== 'all') filtered = filtered.filter(p => p.category === selectedCategory);
-    if (term.trim() !== '') filtered = filtered.filter(p => p.title.toLowerCase().includes(term.toLowerCase()));
-    set({ searchTerm: term, filteredProducts: filtered, currentPage: 1 });
-  },
-
-  setCurrentPage: (page) => set({ currentPage: page }),
 
   getPaginatedProducts: () => {
     const { filteredProducts, currentPage, itemsPerPage } = get();
