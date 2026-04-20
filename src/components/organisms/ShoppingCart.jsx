@@ -21,7 +21,7 @@ export const ShoppingCart = ({ onCheckout }) => {
     <div className="bg-white p-8 rounded-[2rem] border border-zinc-100 shadow-sm animate-in fade-in duration-500">
       <div className="flex items-center justify-between mb-8">
         <h3 className="font-black text-xl tracking-tighter">Your Cart</h3>
-        <button 
+        <button
           onClick={clearCart}
           className="text-[10px] font-bold uppercase tracking-widest text-red-400 hover:text-red-600 transition-colors"
         >
@@ -29,8 +29,8 @@ export const ShoppingCart = ({ onCheckout }) => {
         </button>
       </div>
 
-      <div className="space-y-6 mb-8 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
-        {cart.map((item) => (
+      <div className="space-y-6 mb-8 max-h-[400px] overflow-y-auto pr-2">
+        {cart.map(item => (
           <div key={item.id} className="flex gap-4 group">
             <div className="w-16 h-16 bg-zinc-50 rounded-xl p-2 flex-shrink-0">
               <img src={item.image} alt={item.title} className="w-full h-full object-contain" />
@@ -40,24 +40,24 @@ export const ShoppingCart = ({ onCheckout }) => {
                 {item.title}
               </h4>
               <p className="text-sm font-black text-zinc-400 mt-0.5">${item.price}</p>
-              
+
               <div className="flex items-center justify-between mt-2">
                 <div className="flex items-center border border-zinc-100 rounded-lg overflow-hidden bg-zinc-50">
-                  <button 
+                  <button
                     onClick={() => updateQuantity(item.id, item.quantity - 1)}
                     className="p-1 hover:bg-zinc-200 transition-colors"
                   >
                     <Minus size={12} />
                   </button>
                   <span className="px-2 text-[10px] font-bold w-6 text-center">{item.quantity}</span>
-                  <button 
+                  <button
                     onClick={() => updateQuantity(item.id, item.quantity + 1)}
                     className="p-1 hover:bg-zinc-200 transition-colors"
                   >
                     <Plus size={12} />
                   </button>
                 </div>
-                <button 
+                <button
                   onClick={() => removeFromCart(item.id)}
                   className="text-zinc-300 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"
                 >

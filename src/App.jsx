@@ -9,21 +9,21 @@ import { SuccessScreen } from "./components/organisms/SuccessScreen.jsx";
 import { ProductDetailModal } from "./components/organisms/ProductDetailModal.jsx";
 import { CartDrawer } from "./components/organisms/CartDrawer.jsx";
 import { useProductStore } from "./store/productStore.js";
-import { useUserStore } from "./store/userStore.js"; // Importamos el store de usuario
+import { useUserStore } from "./store/userStore.js";
+
+const PROTECTED_VIEWS = ["checkout"];
 
 function App() {
-  const [view, setView] = useState("shop"); 
-  const fetchProducts = useProductStore((state) => state.fetchProducts);
-  const { isLoggedIn } = useUserStore(); // Obtenemos el estado de autenticación
+  const [view, setView] = useState("shop");
+  const fetchProducts = useProductStore(state => state.fetchProducts);
+  const { isLoggedIn } = useUserStore();
 
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
 
-  // Navegación protegida
   const navigateTo = (newView) => {
-    // Si el usuario intenta ir al checkout sin estar logueado
-    if (newView === "checkout" && !isLoggedIn) {
+    if (PROTECTED_VIEWS.includes(newView) && !isLoggedIn) {
       toast.error("Please sign in to continue with your purchase");
       setView("login");
       return;
@@ -33,13 +33,11 @@ function App() {
 
   return (
     <MainLayout onNavigate={navigateTo}>
-      <Toaster position="bottom-right" richColors /> 
-      
-      {/* Componentes Globales */}
+      <Toaster position="bottom-right" richColors />
+
       <ProductDetailModal />
       <CartDrawer onCheckout={() => navigateTo("checkout")} />
 
-      {/* VISTA: TIENDA */}
       {view === "shop" && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           <div className="lg:col-span-2">
@@ -57,26 +55,23 @@ function App() {
         </div>
       )}
 
-      {/* VISTA: AUTH (LOGIN / REGISTER) */}
       {(view === "login" || view === "register") && (
         <div className="max-w-md mx-auto py-20">
-          <AuthSection 
-            initialMode={view} 
+          <AuthSection
+            initialMode={view}
             onSuccess={() => navigateTo("shop")}
-            onSwitchMode={(mode) => navigateTo(mode)} 
+            onSwitchMode={mode => navigateTo(mode)}
           />
         </div>
       )}
 
-      {/* VISTA: CHECKOUT (PROTEGIDA) */}
       {view === "checkout" && isLoggedIn && (
-        <CheckoutPreview 
-          onBack={() => navigateTo("shop")} 
-          onSuccess={() => navigateTo("success")} 
+        <CheckoutPreview
+          onBack={() => navigateTo("shop")}
+          onSuccess={() => navigateTo("success")}
         />
       )}
 
-      {/* VISTA: ÉXITO */}
       {view === "success" && (
         <SuccessScreen onReturn={() => navigateTo("shop")} />
       )}

@@ -9,16 +9,13 @@ export const CartDrawer = ({ onCheckout }) => {
 
   return (
     <div className="fixed inset-0 z-[150] overflow-hidden">
-      {/* Overlay oscuro */}
-      <div 
+      <div
         className="absolute inset-0 bg-black/40 backdrop-blur-sm animate-in fade-in duration-300"
         onClick={() => setCartOpen(false)}
       />
 
-      {/* Panel Lateral */}
-      <div className="absolute inset-y-0 right-0 w-full max-w-md bg-white shadow-2xl flex flex-col animate-in slide-in-from-right duration-500 ease-out">
-        
-        {/* Header del Carrito */}
+      <div className="absolute inset-y-0 right-0 w-full max-w-md bg-white shadow-2xl flex flex-col animate-in slide-in-from-right duration-500">
+
         <div className="p-6 border-b border-zinc-100 flex items-center justify-between bg-white">
           <div className="flex items-center gap-3">
             <div className="bg-zinc-900 p-2 rounded-xl">
@@ -26,7 +23,7 @@ export const CartDrawer = ({ onCheckout }) => {
             </div>
             <h2 className="text-xl font-black text-zinc-900 tracking-tighter">Your Cart</h2>
           </div>
-          <button 
+          <button
             onClick={() => setCartOpen(false)}
             className="p-2 hover:bg-zinc-100 rounded-full text-zinc-400 hover:text-black transition-all"
           >
@@ -34,18 +31,17 @@ export const CartDrawer = ({ onCheckout }) => {
           </button>
         </div>
 
-        {/* Lista de Productos */}
-        <div className="flex-grow overflow-y-auto p-6 space-y-6 custom-scrollbar">
+        <div className="flex-grow overflow-y-auto p-6 space-y-6">
           {cart.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center text-center space-y-4">
               <div className="bg-zinc-50 p-6 rounded-full">
                 <ShoppingBag size={48} className="text-zinc-200" />
               </div>
-              <p className="text-zinc-500 font-medium">Your cart is empty.<br/>Start adding some products!</p>
+              <p className="text-zinc-500 font-medium">Your cart is empty.<br />Start adding some products!</p>
               <Button variant="outline" onClick={() => setCartOpen(false)}>Continue Shopping</Button>
             </div>
           ) : (
-            cart.map((item) => (
+            cart.map(item => (
               <div key={item.id} className="flex gap-4 animate-in fade-in slide-in-from-bottom-2">
                 <div className="w-20 h-20 bg-zinc-50 rounded-2xl p-2 flex-shrink-0">
                   <img src={item.image} alt={item.title} className="w-full h-full object-contain" />
@@ -55,21 +51,21 @@ export const CartDrawer = ({ onCheckout }) => {
                   <p className="text-sm font-black text-zinc-500 mt-1">${item.price}</p>
                   <div className="flex items-center justify-between mt-2">
                     <div className="flex items-center border border-zinc-100 rounded-lg overflow-hidden bg-zinc-50">
-                      <button 
+                      <button
                         onClick={() => updateQuantity(item.id, item.quantity - 1)}
                         className="p-1.5 hover:bg-zinc-200 transition-colors"
                       >
                         <Minus size={14} />
                       </button>
                       <span className="px-3 text-xs font-bold w-8 text-center">{item.quantity}</span>
-                      <button 
+                      <button
                         onClick={() => updateQuantity(item.id, item.quantity + 1)}
                         className="p-1.5 hover:bg-zinc-200 transition-colors"
                       >
                         <Plus size={14} />
                       </button>
                     </div>
-                    <button 
+                    <button
                       onClick={() => removeFromCart(item.id)}
                       className="text-zinc-300 hover:text-red-500 transition-colors"
                     >
@@ -82,14 +78,13 @@ export const CartDrawer = ({ onCheckout }) => {
           )}
         </div>
 
-        {/* Resumen y Checkout */}
         {cart.length > 0 && (
           <div className="p-8 border-t border-zinc-100 bg-zinc-50/50">
             <div className="flex items-center justify-between mb-6">
               <span className="text-zinc-400 font-bold text-xs uppercase tracking-widest">Total Amount</span>
-              <span className="text-3xl font-black text-zinc-900 tracking-tighter">${getTotal()}</span>
+              <span className="text-3xl font-black text-zinc-900 tracking-tighter">${getTotal().toFixed(2)}</span>
             </div>
-            <Button 
+            <Button
               className="w-full py-5 flex items-center justify-center gap-3 text-sm font-bold uppercase tracking-widest shadow-xl shadow-black/10"
               onClick={() => {
                 setCartOpen(false);

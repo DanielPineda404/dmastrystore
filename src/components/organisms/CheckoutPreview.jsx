@@ -4,24 +4,25 @@ import { Button } from "../atoms/Button.jsx";
 import { ArrowLeft, CreditCard, ShieldCheck, Loader2 } from "lucide-react";
 import { useState } from "react";
 
-export const CheckoutPreview = ({ onBack, onSuccess }) => { // <--- Recibimos onSuccess
+const PROCESSING_DELAY = 2000;
+
+export const CheckoutPreview = ({ onBack, onSuccess }) => {
   const { cart, getTotal, clearCart } = useCartStore();
   const { user } = useUserStore();
   const [isProcessing, setIsProcessing] = useState(false);
 
   const handleConfirmPurchase = () => {
     setIsProcessing(true);
-    
-    // Simulamos un tiempo de espera de red de 2 segundos para dar realismo
+
     setTimeout(() => {
       clearCart();
-      onSuccess(); // <--- Cambiamos el alert por esto
-    }, 2000);
+      onSuccess();
+    }, PROCESSING_DELAY);
   };
 
   return (
     <div className="max-w-3xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <button 
+      <button
         onClick={onBack}
         disabled={isProcessing}
         className="flex items-center gap-2 text-zinc-500 hover:text-black transition-colors text-sm font-medium disabled:opacity-30"
@@ -31,12 +32,10 @@ export const CheckoutPreview = ({ onBack, onSuccess }) => { // <--- Recibimos on
       </button>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-        {/* Resumen de Productos */}
         <div className="space-y-6">
           <h2 className="text-2xl font-bold">Review Order</h2>
-          <div className="space-y-4 opacity-100 transition-opacity duration-300">
-             {/* ... (mapeo de cart igual que antes) ... */}
-             {cart.map((item) => (
+          <div className="space-y-4">
+            {cart.map(item => (
               <div key={item.id} className="flex justify-between items-center border-b border-zinc-50 pb-4">
                 <div className="flex gap-4">
                   <div className="w-12 h-12 bg-zinc-100 rounded-lg overflow-hidden">
@@ -53,7 +52,6 @@ export const CheckoutPreview = ({ onBack, onSuccess }) => { // <--- Recibimos on
           </div>
         </div>
 
-        {/* Detalles de Envío y Pago */}
         <div className="bg-zinc-50 p-8 rounded-3xl space-y-6 border border-zinc-100 relative overflow-hidden">
           {isProcessing && (
             <div className="absolute inset-0 bg-white/60 backdrop-blur-sm flex flex-col items-center justify-center z-10 animate-in fade-in">
@@ -73,10 +71,10 @@ export const CheckoutPreview = ({ onBack, onSuccess }) => { // <--- Recibimos on
               <span>Total</span>
               <span>${getTotal().toFixed(2)}</span>
             </div>
-            
+
             <div className="space-y-3">
-              <Button 
-                onClick={handleConfirmPurchase} 
+              <Button
+                onClick={handleConfirmPurchase}
                 disabled={isProcessing}
                 className="w-full py-4 flex items-center justify-center gap-2 shadow-xl shadow-black/10"
               >

@@ -5,34 +5,31 @@ import { Button } from "../atoms/Button.jsx";
 import { X, ShoppingCart, Star, ShieldCheck, ChevronLeft, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 
-export const ProductDetailModal = () => {
-  const { 
-    selectedProduct, 
-    clearSelectedProduct, 
-    showNextProduct, 
-    showPrevProduct 
-  } = useProductStore();
-  const addToCart = useCartStore((state) => state.addToCart);
+const handleKeyNavigation = (e, showNext, showPrev, clearModal) => {
+  if (e.key === "ArrowRight") showNext();
+  if (e.key === "ArrowLeft") showPrev();
+  if (e.key === "Escape") clearModal();
+};
 
-  // Soporte para navegación por teclado
+export const ProductDetailModal = () => {
+  const {
+    selectedProduct,
+    clearSelectedProduct,
+    showNextProduct,
+    showPrevProduct,
+  } = useProductStore();
+  const addToCart = useCartStore(state => state.addToCart);
+
   useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (!selectedProduct) return;
-      if (e.key === "ArrowRight") showNextProduct();
-      if (e.key === "ArrowLeft") showPrevProduct();
-      if (e.key === "Escape") clearSelectedProduct();
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    if (!selectedProduct) return;
+
+    const handler = (e) => handleKeyNavigation(e, showNextProduct, showPrevProduct, clearSelectedProduct);
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
   }, [selectedProduct, showNextProduct, showPrevProduct, clearSelectedProduct]);
 
-  // Bloquear el scroll del body
   useEffect(() => {
-    if (selectedProduct) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
+    document.body.style.overflow = selectedProduct ? 'hidden' : 'unset';
     return () => { document.body.style.overflow = 'unset'; };
   }, [selectedProduct]);
 
