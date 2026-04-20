@@ -28,12 +28,12 @@ export const CheckoutPreview = ({ onBack, onSuccess }) => {
         className="flex items-center gap-2 text-zinc-500 hover:text-black transition-colors text-sm font-medium disabled:opacity-30"
       >
         <ArrowLeft size={16} />
-        Back to shopping
+        Volver a comprar
       </button>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
         <div className="space-y-6">
-          <h2 className="text-2xl font-bold">Review Order</h2>
+          <h2 className="text-2xl font-bold">Revisar Pedido</h2>
           <div className="space-y-4">
             {cart.map(item => (
               <div key={item.id} className="flex justify-between items-center border-b border-zinc-50 pb-4">
@@ -43,7 +43,7 @@ export const CheckoutPreview = ({ onBack, onSuccess }) => {
                   </div>
                   <div>
                     <p className="text-sm font-bold truncate w-40">{item.title}</p>
-                    <p className="text-xs text-zinc-500">Qty: {item.quantity}</p>
+                    <p className="text-xs text-zinc-500">Cantidad: {item.quantity}</p>
                   </div>
                 </div>
                 <p className="text-sm font-medium">${(item.price * item.quantity).toFixed(2)}</p>
@@ -56,12 +56,12 @@ export const CheckoutPreview = ({ onBack, onSuccess }) => {
           {isProcessing && (
             <div className="absolute inset-0 bg-white/60 backdrop-blur-sm flex flex-col items-center justify-center z-10 animate-in fade-in">
               <Loader2 className="animate-spin text-black mb-2" size={32} />
-              <p className="text-sm font-bold tracking-widest uppercase text-black">Processing...</p>
+              <p className="text-sm font-bold tracking-widest uppercase text-black">Procesando...</p>
             </div>
           )}
 
           <div>
-            <h3 className="text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-4">Shipping Information</h3>
+            <h3 className="text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-4">Información de Envío</h3>
             <p className="font-bold text-zinc-900">{user?.name || "Guest Account"}</p>
             <p className="text-sm text-zinc-500">{user?.email || "standard-shipping@example.com"}</p>
           </div>
@@ -79,11 +79,11 @@ export const CheckoutPreview = ({ onBack, onSuccess }) => {
                 className="w-full py-4 flex items-center justify-center gap-2 shadow-xl shadow-black/10"
               >
                 {!isProcessing && <CreditCard size={18} />}
-                {isProcessing ? "Confirming..." : "Pay Now"}
+                {isProcessing ? "Confirmando..." : "Pagar Ahora"}
               </Button>
               <p className="text-[10px] text-zinc-400 flex items-center justify-center gap-1">
                 <ShieldCheck size={12} className="text-green-500" />
-                Verified & Secure Transaction
+                Transacción verificada y segura
               </p>
             </div>
           </div>

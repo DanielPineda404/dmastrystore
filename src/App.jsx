@@ -24,7 +24,7 @@ function App() {
 
   const navigateTo = (newView) => {
     if (PROTECTED_VIEWS.includes(newView) && !isLoggedIn) {
-      toast.error("Please sign in to continue with your purchase");
+      toast.error("Por favor, inicia sesión para continuar con tu compra");
       setView("login");
       return;
     }
@@ -42,8 +42,8 @@ function App() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           <div className="lg:col-span-2">
             <div className="mb-8">
-              <h1 className="text-3xl font-bold tracking-tight text-zinc-900">Collections</h1>
-              <p className="text-zinc-500 text-sm mt-1">Explore our exclusive selection.</p>
+              <h1 className="text-3xl font-bold tracking-tight text-zinc-900">Colecciones</h1>
+              <p className="text-zinc-500 text-sm mt-1">Explora nuestra selección exclusiva.</p>
             </div>
             <ProductGallery />
           </div>

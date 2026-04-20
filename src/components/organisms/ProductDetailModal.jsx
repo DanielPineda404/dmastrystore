@@ -37,7 +37,7 @@ export const ProductDetailModal = () => {
 
   const handleAddToCart = () => {
     addToCart(selectedProduct);
-    toast.success("Product added to your bag");
+    toast.success("Producto añadido a tu bolsa");
   };
 
   const handleBackdropClick = (e) => {
@@ -114,7 +114,7 @@ export const ProductDetailModal = () => {
                 </span>
               </div>
               <span className="text-xs text-zinc-400 font-medium truncate">
-                {selectedProduct.rating?.count || "120"} reviews
+                {selectedProduct.rating?.count || "120"} reseñas
               </span>
             </div>
           </div>
@@ -133,7 +133,7 @@ export const ProductDetailModal = () => {
                 ${selectedProduct.price}
               </span>
               <div className="flex items-center gap-1.5 text-[10px] font-bold text-green-700 bg-green-100/60 px-3 py-1 rounded-full uppercase tracking-wider">
-                <ShieldCheck size={14} /> In Stock
+                <ShieldCheck size={14} /> En Stock
               </div>
             </div>
 
@@ -142,7 +142,7 @@ export const ProductDetailModal = () => {
               className="w-full py-4 md:py-5 flex items-center justify-center gap-3 text-xs md:text-sm font-bold uppercase tracking-widest shadow-xl shadow-black/10 active:scale-[0.98] transition-all"
             >
               <ShoppingCart size={18} />
-              Add to Shopping Bag
+              Añadir a la Bolsa de Compras
             </Button>
           </div>
         </div>

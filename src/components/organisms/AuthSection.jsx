@@ -20,7 +20,7 @@ export const AuthSection = ({ initialMode = "login", onSuccess, onSwitchMode }) 
     if (isRegistering) {
       const res = register(formData);
       if (res.success) {
-        toast.success("Account created successfully!");
+        toast.success("¡Cuenta creada exitosamente!");
         onSwitchMode("login");
       } else {
         toast.error(res.message);
@@ -28,7 +28,7 @@ export const AuthSection = ({ initialMode = "login", onSuccess, onSwitchMode }) 
     } else {
       const res = login(formData.email, formData.password);
       if (res.success) {
-        toast.success("Welcome back!");
+        toast.success("¡Bienvenido de vuelta!");
         onSuccess();
       } else {
         toast.error(res.message);
@@ -48,7 +48,7 @@ export const AuthSection = ({ initialMode = "login", onSuccess, onSwitchMode }) 
             <User size={32} className="text-white" />
           </div>
           <div>
-            <p className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.2em] mb-1">Authenticated</p>
+            <p className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.2em] mb-1">Autenticado</p>
             <h3 className="font-bold text-2xl text-zinc-900">{user.name}</h3>
             <p className="text-sm text-zinc-500">{user.email}</p>
           </div>
@@ -56,10 +56,10 @@ export const AuthSection = ({ initialMode = "login", onSuccess, onSwitchMode }) 
 
         <div className="space-y-3">
           <Button variant="outline" onClick={onSuccess} className="w-full py-4 border-zinc-200">
-            Go to Store
+            Ir a la Tienda
           </Button>
           <Button variant="outline" onClick={logout} className="w-full flex items-center justify-center gap-2 text-red-500 border-red-50 hover:bg-red-50">
-            <LogOut size={16} /> Logout
+            <LogOut size={16} /> Cerrar Sesión
           </Button>
         </div>
       </div>
@@ -72,26 +72,26 @@ export const AuthSection = ({ initialMode = "login", onSuccess, onSwitchMode }) 
         onClick={onSuccess}
         className="mb-8 flex items-center gap-2 text-zinc-400 hover:text-black transition-colors text-xs font-bold uppercase tracking-widest"
       >
-        <ArrowLeft size={14} /> Back to Store
+        <ArrowLeft size={14} /> Volver a la Tienda
       </button>
 
       <div className="mb-10">
         <h3 className="font-black text-4xl mb-3 tracking-tighter text-zinc-900">
-          {isRegistering ? "Join us." : "Welcome back."}
+          {isRegistering ? "Únete a nosotros." : "Bienvenido de vuelta."}
         </h3>
         <p className="text-sm text-zinc-500 leading-relaxed">
           {isRegistering
-            ? "Create your account to start managing your daily essentials."
-            : "Sign in to access your saved items and secure checkout."}
+            ? "Crea tu cuenta para comenzar a gestionar tus productos diarios."
+            : "Inicia sesión para acceder a tus artículos guardados y checkout seguro."}
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {isRegistering && (
           <div className="space-y-1.5">
-            <label className="text-[10px] font-black text-zinc-400 uppercase ml-1">Full Name</label>
+            <label className="text-[10px] font-black text-zinc-400 uppercase ml-1">Nombre Completo</label>
             <Input
-              placeholder="John Doe"
+              placeholder="Juan Pérez"
               value={formData.name}
               onChange={(e) => updateFormData('name', e.target.value)}
               required
@@ -101,7 +101,7 @@ export const AuthSection = ({ initialMode = "login", onSuccess, onSwitchMode }) 
         )}
 
         <div className="space-y-1.5">
-          <label className="text-[10px] font-black text-zinc-400 uppercase ml-1">Email Address</label>
+          <label className="text-[10px] font-black text-zinc-400 uppercase ml-1">Correo Electrónico</label>
           <Input
             type="email"
             placeholder="name@example.com"
@@ -113,7 +113,7 @@ export const AuthSection = ({ initialMode = "login", onSuccess, onSwitchMode }) 
         </div>
 
         <div className="space-y-1.5">
-          <label className="text-[10px] font-black text-zinc-400 uppercase ml-1">Password</label>
+          <label className="text-[10px] font-black text-zinc-400 uppercase ml-1">Contraseña</label>
           <Input
             type="password"
             placeholder="••••••••"
@@ -125,7 +125,7 @@ export const AuthSection = ({ initialMode = "login", onSuccess, onSwitchMode }) 
         </div>
 
         <Button type="submit" className="w-full py-4 mt-4 shadow-xl shadow-black/10 font-bold text-sm uppercase tracking-widest">
-          {isRegistering ? "Create Account" : "Sign In"}
+          {isRegistering ? "Crear Cuenta" : "Iniciar Sesión"}
         </Button>
       </form>
 
@@ -135,8 +135,8 @@ export const AuthSection = ({ initialMode = "login", onSuccess, onSwitchMode }) 
           className="w-full text-center text-xs font-bold text-zinc-400 hover:text-black transition-colors"
         >
           {isRegistering
-            ? "Already have an account? Sign In"
-            : "Don't have an account? Create one"}
+            ? "¿Ya tienes una cuenta? Inicia Sesión"
+            : "¿No tienes una cuenta? Crea una"}
         </button>
       </div>
     </div>

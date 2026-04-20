@@ -11,8 +11,8 @@ export const ShoppingCart = ({ onCheckout }) => {
         <div className="bg-zinc-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
           <ShoppingBag className="text-zinc-300" size={24} />
         </div>
-        <h3 className="font-bold text-zinc-900">Your cart is empty</h3>
-        <p className="text-zinc-400 text-xs mt-1">Add some products to get started.</p>
+        <h3 className="font-bold text-zinc-900">Tu carrito está vacío</h3>
+        <p className="text-zinc-400 text-xs mt-1">Añade algunos productos para comenzar.</p>
       </div>
     );
   }
@@ -20,12 +20,12 @@ export const ShoppingCart = ({ onCheckout }) => {
   return (
     <div className="bg-white p-8 rounded-[2rem] border border-zinc-100 shadow-sm animate-in fade-in duration-500">
       <div className="flex items-center justify-between mb-8">
-        <h3 className="font-black text-xl tracking-tighter">Your Cart</h3>
+        <h3 className="font-black text-xl tracking-tighter">Tu Carrito</h3>
         <button
           onClick={clearCart}
           className="text-[10px] font-bold uppercase tracking-widest text-red-400 hover:text-red-600 transition-colors"
         >
-          Clear all
+          Limpiar todo
         </button>
       </div>
 
@@ -77,7 +77,7 @@ export const ShoppingCart = ({ onCheckout }) => {
           </span>
         </div>
         <Button onClick={onCheckout} className="w-full py-4 text-xs font-bold uppercase tracking-[0.15em] shadow-lg shadow-black/5">
-          Checkout Now
+          Pagar ahora
         </Button>
       </div>
     </div>

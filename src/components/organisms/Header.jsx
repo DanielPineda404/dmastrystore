@@ -23,7 +23,7 @@ export const Header = ({ onNavigate }) => {
             <Home size={18} className="text-white" />
           </div>
           <h1 className="text-xl font-black tracking-tighter text-black group-hover:opacity-70 transition-opacity">
-            STORE<span className="text-zinc-400">.</span>
+            D'Mastry Store<span className="text-zinc-400">.</span>
           </h1>
         </div>
 
@@ -31,7 +31,7 @@ export const Header = ({ onNavigate }) => {
           <Search size={16} className="text-zinc-400" />
           <input
             type="text"
-            placeholder="Search products..."
+            placeholder="Buscar productos..."
             className="bg-transparent border-none focus:ring-0 text-xs w-full ml-2"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -44,7 +44,7 @@ export const Header = ({ onNavigate }) => {
             className="hidden sm:flex items-center gap-2 px-3 py-2 hover:bg-zinc-50 rounded-lg transition-colors text-zinc-500 hover:text-black"
           >
             <Home size={20} />
-            <span className="text-xs font-bold uppercase tracking-widest">Shop</span>
+            <span className="text-xs font-bold uppercase tracking-widest">Tienda</span>
           </button>
 
           <button
@@ -54,7 +54,7 @@ export const Header = ({ onNavigate }) => {
             {isLoggedIn ? (
               <>
                 <span className="text-xs font-medium text-zinc-600 hidden lg:block">
-                  Hi, {user.name}
+                  Hola, {user.name}
                 </span>
                 <UserCheck size={20} className="text-green-500" />
               </>

@@ -16,7 +16,7 @@ export const ProductCard = ({ product, onAdd }) => {
   const handleAddToCart = (e) => {
     e.stopPropagation();
     onAdd(product);
-    toast.success("Added to cart");
+    toast.success("Añadido al carrito");
   };
 
   return (
@@ -35,7 +35,7 @@ export const ProductCard = ({ product, onAdd }) => {
         ) : (
           <div className="flex flex-col items-center gap-2 text-zinc-300">
             <ImageOff size={32} />
-            <span className="text-[10px] font-bold uppercase">No Preview</span>
+            <span className="text-[10px] font-bold uppercase">Sin Vista Previa</span>
           </div>
         )}
       </div>

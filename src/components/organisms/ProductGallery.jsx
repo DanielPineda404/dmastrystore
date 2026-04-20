@@ -15,7 +15,7 @@ export const ProductGallery = () => {
     return (
       <div className="py-20 flex flex-col items-center justify-center gap-4">
         <Loader2 className="animate-spin text-zinc-200" size={48} />
-        <p className="text-zinc-400 font-medium animate-pulse">Fetching inventory...</p>
+        <p className="text-zinc-400 text-xs mt-1 animate-pulse">Obteniendo inventario...</p>
       </div>
     );
   }
@@ -26,7 +26,7 @@ export const ProductGallery = () => {
 
       {productsToShow.length === 0 ? (
         <div className="py-20 text-center bg-zinc-50 rounded-3xl border border-dashed border-zinc-200">
-          <p className="text-zinc-400 text-lg font-medium">No items match your criteria.</p>
+          <p className="text-zinc-400 text-lg font-medium">No hay artículos que coincidan con tus criterios.</p>
         </div>
       ) : (
         <>

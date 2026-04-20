@@ -21,7 +21,7 @@ export const CartDrawer = ({ onCheckout }) => {
             <div className="bg-zinc-900 p-2 rounded-xl">
               <ShoppingBag size={20} className="text-white" />
             </div>
-            <h2 className="text-xl font-black text-zinc-900 tracking-tighter">Your Cart</h2>
+            <h2 className="text-xl font-black text-zinc-900 tracking-tighter">Tu Carrito</h2>
           </div>
           <button
             onClick={() => setCartOpen(false)}
@@ -37,8 +37,8 @@ export const CartDrawer = ({ onCheckout }) => {
               <div className="bg-zinc-50 p-6 rounded-full">
                 <ShoppingBag size={48} className="text-zinc-200" />
               </div>
-              <p className="text-zinc-500 font-medium">Your cart is empty.<br />Start adding some products!</p>
-              <Button variant="outline" onClick={() => setCartOpen(false)}>Continue Shopping</Button>
+              <p className="text-zinc-500 font-medium">Tu carrito está vacío.<br />¡Empieza a añadir algunos productos!</p>
+              <Button variant="outline" onClick={() => setCartOpen(false)}>Seguir Comprando</Button>
             </div>
           ) : (
             cart.map(item => (
@@ -81,7 +81,7 @@ export const CartDrawer = ({ onCheckout }) => {
         {cart.length > 0 && (
           <div className="p-8 border-t border-zinc-100 bg-zinc-50/50">
             <div className="flex items-center justify-between mb-6">
-              <span className="text-zinc-400 font-bold text-xs uppercase tracking-widest">Total Amount</span>
+              <span className="text-zinc-400 font-bold text-xs uppercase tracking-widest">Monto Total</span>
               <span className="text-3xl font-black text-zinc-900 tracking-tighter">${getTotal().toFixed(2)}</span>
             </div>
             <Button
@@ -91,7 +91,7 @@ export const CartDrawer = ({ onCheckout }) => {
                 onCheckout();
               }}
             >
-              Secure Checkout
+              Pago Seguro
               <ArrowRight size={18} />
             </Button>
           </div>

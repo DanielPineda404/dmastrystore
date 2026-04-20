@@ -13,9 +13,9 @@ export const SuccessScreen = ({ onReturn }) => (
     </div>
 
     <div className="text-center space-y-4 max-w-sm">
-      <h2 className="text-3xl font-black text-zinc-900 tracking-tight">Order Confirmed!</h2>
+      <h2 className="text-3xl font-black text-zinc-900 tracking-tight">¡Pedido Confirmado!</h2>
       <p className="text-zinc-500 leading-relaxed">
-        Your payment was processed successfully. We've sent a confirmation email to your inbox.
+        Tu pago fue procesado exitosamente. Hemos enviado un correo de confirmación a tu bandeja de entrada.
       </p>
     </div>
 
@@ -25,7 +25,7 @@ export const SuccessScreen = ({ onReturn }) => (
         className="w-full py-4 flex items-center justify-center gap-2"
       >
         <ShoppingBag size={18} />
-        Keep Shopping
+        Seguir Comprando
       </Button>
       <p className="text-center text-xs text-zinc-400">Order ID: #{Math.floor(Math.random() * 1000000)}</p>
     </div>

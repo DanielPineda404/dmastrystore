@@ -11,7 +11,7 @@ export const MainLayout = ({ children, onNavigate }) => (
     <footer className="py-12 border-t border-zinc-100 mt-20">
       <div className="max-w-7xl mx-auto px-4 text-center">
         <p className="text-xs text-zinc-400 font-medium uppercase tracking-widest">
-          © 2026 D'Mastry Store — Minimalist Design
+          © 2026 D'Mastry Store — By Daniel Pineda
         </p>
       </div>
     </footer>
