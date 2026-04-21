@@ -1,9 +1,11 @@
+import { useNavigate } from "react-router-dom";
 import { useCartStore } from "../../store/cartStore.js";
 import { useProductStore } from "../../store/productStore.js";
 import { useUserStore } from "../../store/userStore.js";
 import { ShoppingCart, Search, UserCheck, User as UserIcon, Home } from "lucide-react";
 
-export const Header = ({ onNavigate }) => {
+export const Header = () => {
+  const navigate = useNavigate();
   const cart = useCartStore(state => state.cart);
   const toggleCart = useCartStore(state => state.toggleCart);
   const { searchTerm, setSearchTerm } = useProductStore();
@@ -17,7 +19,7 @@ export const Header = ({ onNavigate }) => {
 
         <div
           className="flex items-center gap-2 cursor-pointer group"
-          onClick={() => onNavigate("shop")}
+          onClick={() => navigate("/")}
         >
           <div className="p-2 bg-zinc-900 rounded-lg group-hover:bg-zinc-700 transition-colors md:hidden">
             <Home size={18} className="text-white" />
@@ -40,7 +42,7 @@ export const Header = ({ onNavigate }) => {
 
         <div className="flex items-center gap-2 md:gap-4">
           <button
-            onClick={() => onNavigate("shop")}
+            onClick={() => navigate("/")}
             className="hidden sm:flex items-center gap-2 px-3 py-2 hover:bg-zinc-50 rounded-lg transition-colors text-zinc-500 hover:text-black"
           >
             <Home size={20} />
@@ -49,7 +51,7 @@ export const Header = ({ onNavigate }) => {
 
           <button
             className="flex items-center gap-2 hover:bg-zinc-50 p-2 rounded-lg transition-colors"
-            onClick={() => onNavigate("login")}
+            onClick={() => navigate("/login")}
           >
             {isLoggedIn ? (
               <>

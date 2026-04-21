@@ -142,7 +142,7 @@ export const ProductDetailModal = () => {
               className="w-full py-4 md:py-5 flex items-center justify-center gap-3 text-xs md:text-sm font-bold uppercase tracking-widest shadow-xl shadow-black/10 active:scale-[0.98] transition-all"
             >
               <ShoppingCart size={18} />
-              Añadir a la Bolsa de Compras
+              Añadir al carrito
             </Button>
           </div>
         </div>

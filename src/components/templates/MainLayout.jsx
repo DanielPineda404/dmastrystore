@@ -1,8 +1,8 @@
 import { Header } from "../organisms/Header.jsx";
 
-export const MainLayout = ({ children, onNavigate }) => (
+export const MainLayout = ({ children }) => (
   <div className="min-h-screen bg-zinc-50">
-    <Header onNavigate={onNavigate} />
+    <Header />
 
     <main className="max-w-7xl mx-auto px-4 py-8">
       {children}
