@@ -5,6 +5,7 @@ import { RegisterPage } from '../pages/RegisterPage.jsx';
 import { CheckoutPage } from '../pages/CheckoutPage.jsx';
 import { SuccessPage } from '../pages/SuccessPage.jsx';
 import { ProtectedRoute } from './ProtectedRoute.jsx';
+import { AuthRoute } from './AuthRoute.jsx';
 
 export const router = createBrowserRouter([
   {
@@ -29,6 +30,11 @@ export const router = createBrowserRouter([
   },
   {
     path: '/success',
-    element: <SuccessPage />,
+    element: (
+      <AuthRoute>
+        <SuccessPage />
+      </AuthRoute>
+    ),
   },
 ]);
+

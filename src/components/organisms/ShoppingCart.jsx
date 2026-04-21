@@ -1,9 +1,20 @@
 import { useCartStore } from "../../store/cartStore.js";
 import { Button } from "../atoms/Button.jsx";
 import { Trash2, Plus, Minus, ShoppingBag } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export const ShoppingCart = ({ onCheckout }) => {
+  const navigate = useNavigate();
   const { cart, removeFromCart, updateQuantity, clearCart, getTotal } = useCartStore();
+
+  const handleCheckout = () => {
+    if (cart.length === 0) {
+      toast.error("Tu carrito está vacío");
+      return;
+    }
+    navigate("/checkout");
+  };
 
   if (cart.length === 0) {
     return (
@@ -76,7 +87,7 @@ export const ShoppingCart = ({ onCheckout }) => {
             ${getTotal().toFixed(2)}
           </span>
         </div>
-        <Button onClick={onCheckout} className="w-full py-4 text-xs font-bold uppercase tracking-[0.15em] shadow-lg shadow-black/5">
+        <Button onClick={handleCheckout} className="w-full py-4 text-xs font-bold uppercase tracking-[0.15em] shadow-lg shadow-black/5">
           Pagar ahora
         </Button>
       </div>

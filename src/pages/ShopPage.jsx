@@ -6,11 +6,9 @@ import { ShoppingCart } from '../components/organisms/ShoppingCart.jsx';
 import { ProductDetailModal } from '../components/organisms/ProductDetailModal.jsx';
 import { CartDrawer } from '../components/organisms/CartDrawer.jsx';
 import { useProductStore } from '../store/productStore.js';
-import { useNavigate } from 'react-router-dom';
 
 export const ShopPage = () => {
   const fetchProducts = useProductStore(state => state.fetchProducts);
-  const navigate = useNavigate();
 
   useEffect(() => {
     fetchProducts();
@@ -21,7 +19,7 @@ export const ShopPage = () => {
       <Toaster position="bottom-right" richColors />
 
       <ProductDetailModal />
-      <CartDrawer onCheckout={() => navigate('/checkout')} />
+      <CartDrawer />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
         <div className="lg:col-span-2">
@@ -33,7 +31,7 @@ export const ShopPage = () => {
         </div>
         <div className="lg:col-span-1">
           <div className="sticky top-24">
-            <ShoppingCart onCheckout={() => navigate('/checkout')} />
+            <ShoppingCart />
           </div>
         </div>
       </div>

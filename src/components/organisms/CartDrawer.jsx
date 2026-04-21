@@ -1,9 +1,21 @@
+import { useNavigate } from "react-router-dom";
 import { useCartStore } from "../../store/cartStore.js";
 import { Button } from "../atoms/Button.jsx";
 import { X, ShoppingBag, Trash2, Plus, Minus, ArrowRight } from "lucide-react";
+import { toast } from "sonner";
 
-export const CartDrawer = ({ onCheckout }) => {
+export const CartDrawer = () => {
+  const navigate = useNavigate();
   const { cart, isCartOpen, setCartOpen, updateQuantity, removeFromCart, getTotal } = useCartStore();
+
+  const handleCheckout = () => {
+    if (cart.length === 0) {
+      toast.error("Tu carrito está vacío");
+      return;
+    }
+    setCartOpen(false);
+    navigate("/checkout");
+  };
 
   if (!isCartOpen) return null;
 
@@ -86,10 +98,7 @@ export const CartDrawer = ({ onCheckout }) => {
             </div>
             <Button
               className="w-full py-5 flex items-center justify-center gap-3 text-sm font-bold uppercase tracking-widest shadow-xl shadow-black/10"
-              onClick={() => {
-                setCartOpen(false);
-                onCheckout();
-              }}
+              onClick={handleCheckout}
             >
               Pago Seguro
               <ArrowRight size={18} />
